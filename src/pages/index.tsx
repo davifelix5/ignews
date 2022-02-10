@@ -23,15 +23,23 @@ export default function Home({ price, interval, error }: HomeProps) {
       <main className={styles.main}>
         <section className={`${styles.hero} ${error ? styles.error : ''}`}>
           <span>👏 Hey, welcome</span>
-          <h1>News about the <br /> <span>React</span> world</h1>
+          <h1>News about <br /> the <span>React</span> world</h1>
 
-          {error ? [
-            <p>There was an error with the subscription section</p>,
-            <p>Please try again later</p>
-          ] : [
-            <p>Get access to all publications <br /> <span>for {price} / {interval}</span></p>,
-            <SubscribeButton />
-          ]}
+          {error ? (
+            <>
+              <p>There was an error with the subscription section</p>,
+              <p>Please try again later</p>
+            </>
+          ) : (
+              <>
+                <p>
+                  Get access to all publications <br /> 
+                  <span>for {price} / {interval}</span>
+                </p>
+                <SubscribeButton />
+              </>
+            )
+          }
 
         </section>
         <img src="/woman.svg" alt="Woman coding in React" />
@@ -42,7 +50,7 @@ export default function Home({ price, interval, error }: HomeProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const priceId = 'price_1KRLCdL8jft1KGhg0tcmsXJw'
+    const priceId = process.env.STRIPE_PRICE_ID
 
     const {
       unit_amount: priceInCents,
