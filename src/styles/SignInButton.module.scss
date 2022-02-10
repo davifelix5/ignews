@@ -19,7 +19,7 @@
     }
   }
 
-  &.loggedIn svg {
+  &.loggedIn button svg {
     &:hover {
       transform: scale(1.1);
     }
@@ -28,5 +28,12 @@
 
   span {
     white-space: nowrap;
+  }
+
+  button {
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
   }
 }
