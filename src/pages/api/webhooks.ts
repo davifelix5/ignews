@@ -60,26 +60,6 @@ const webhooks: NextApiHandler = async (req, res) => {
           message: 'Subscription modified succesfully'
         })
 
-      case PAYMENT_SUCCED_STATUS: {
-        
-        const {
-          billing_reason,
-          subscription,
-          customer
-        } = event.data.object as Stripe.Invoice
-
-        if (billing_reason === 'subscription_create') {
-          await saveSubscription({
-            subscriptionId: subscription.toString(),
-            customerId: customer.toString(),
-            shoudCreateSubscription: true
-          })
-        }
-
-        return res.json({message: 'Subscription validated successfully'})
-
-      }
-
       default: {
         return res.json({message: 'Unhandled webhook event'})
       }
