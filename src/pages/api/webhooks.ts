@@ -7,9 +7,15 @@ import { stripe } from '../../services/stripe'
 import { saveSubscription } from './_lib/saveSubscription'
 
 const PAYMENT_SUCCED_STATUS = 'invoice.payment_succeeded'
+const SUBSCRIPTION_CREATED_STATUS = 'customer.subscription.created'
+const SUBSCRIPTION_UPDATED_STATUS = 'customer.subscription.updated'
+const SUBSCRIPTION_DELETED_STATUS = 'customer.subscription.deleted'
 
 const relevantEvents = new Set([
-  PAYMENT_SUCCED_STATUS
+  PAYMENT_SUCCED_STATUS,
+  SUBSCRIPTION_CREATED_STATUS,
+  SUBSCRIPTION_UPDATED_STATUS,
+  SUBSCRIPTION_DELETED_STATUS,
 ])
 
 export const config = {
@@ -38,6 +44,22 @@ const webhooks: NextApiHandler = async (req, res) => {
     }
 
     switch (event.type) {
+      case SUBSCRIPTION_CREATED_STATUS:
+      case SUBSCRIPTION_UPDATED_STATUS:
+      case SUBSCRIPTION_DELETED_STATUS:
+        
+        const subscription = event.data.object as Stripe.Subscription
+
+        await saveSubscription({
+          subscriptionId: subscription.id.toString(),
+          customerId: subscription.customer.toString(),
+          shoudCreateSubscription: event.type === 'customer.subscription.created'
+        })
+
+        return res.json({
+          message: 'Subscription modified succesfully'
+        })
+
       case PAYMENT_SUCCED_STATUS: {
         
         const {
@@ -47,7 +69,11 @@ const webhooks: NextApiHandler = async (req, res) => {
         } = event.data.object as Stripe.Invoice
 
         if (billing_reason === 'subscription_create') {
-          saveSubscription(subscription.toString(), customer.toString())
+          await saveSubscription({
+            subscriptionId: subscription.toString(),
+            customerId: customer.toString(),
+            shoudCreateSubscription: true
+          })
         }
 
         return res.json({message: 'Subscription validated successfully'})
@@ -59,7 +85,9 @@ const webhooks: NextApiHandler = async (req, res) => {
       }
     }
 
-  } catch {
+  } catch (err) {
+
+    console.log(err)
 
     res.status(500).json({
       message: 'Error on stripe webhooks listener'
