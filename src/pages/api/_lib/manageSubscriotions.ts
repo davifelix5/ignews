@@ -72,3 +72,46 @@ export async function saveSubscription({
   }
 
 }
+
+export async function checkSubscription(email: string) {
+  const user = await fauna.query<{ data: { stripe_customer_id: string } }>(
+    q.Get(
+      q.Match(
+        q.Index('user_by_email'), email,
+      )
+    )
+  )
+
+  const customer = user.data.stripe_customer_id
+
+  if (customer) {
+
+    const stripeSubscriptions = await stripe.subscriptions.list({
+      customer
+    })
+    
+    const [stripeSubscription] = stripeSubscriptions.data
+
+    if (stripeSubscription) {
+      const { status } = await fauna.query< {status: 'canceled' | 'active'} >(
+  
+        q.Select(
+          'data',
+          q.Get(
+            q.Match(
+              q.Index('subscription_by_id'), stripeSubscription.id
+            )
+          )
+        ),
+        
+      )
+    
+      if (status === 'active') {
+        return true
+      }
+    }
+  
+  }
+
+  return false
+}

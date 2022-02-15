@@ -1,0 +1,46 @@
+.container {
+  position: fixed;
+  width: 100vw;
+  height: calc(100vh - 5.5rem);
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+
+  background: linear-gradient(transparent, #000);
+
+
+  button {
+    margin-bottom: 5.625rem;
+    border: none;
+    background-color: var(--grey-500);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    color: var(--shape);
+    font-size: 1.5rem;
+    font-weight: 700;
+    
+    border-radius: 5rem;
+    padding: 2rem 5rem;
+
+    transition: filter 0.2s;
+    
+    &:hover {
+      filter: brightness(0.8);
+    }
+    span {
+      margin-left: 1rem;
+      color: var(--yellow-500);
+      font-weight: 900;
+    }
+    img {
+      margin-left: 1.5rem;
+    }
+  }
+
+}

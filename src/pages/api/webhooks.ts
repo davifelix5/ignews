@@ -4,7 +4,7 @@ import Stripe from 'stripe'
 import { buffer } from '../../utils/buffer'
 import { stripe } from '../../services/stripe'
 
-import { saveSubscription } from './_lib/saveSubscription'
+import { saveSubscription } from './_lib/manageSubscriotions'
 
 const PAYMENT_SUCCED_STATUS = 'invoice.payment_succeeded'
 const SUBSCRIPTION_CREATED_STATUS = 'customer.subscription.created'
@@ -66,8 +66,6 @@ const webhooks: NextApiHandler = async (req, res) => {
     }
 
   } catch (err) {
-
-    console.log(err)
 
     res.status(500).json({
       message: 'Error on stripe webhooks listener'
