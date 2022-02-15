@@ -1,0 +1,41 @@
+.container {
+	max-width: 760px;
+	margin: 0 auto;
+	padding: 3rem 1rem;
+    
+	ul {
+		li {
+			padding-bottom: 2rem;
+			border-bottom: 1px solid var(--grey-500);
+		
+			time, p {
+				color: var(--grey-300);
+			}
+
+			time {
+				display: inline-block;
+				margin-bottom: 1rem;
+			}
+
+			h2 {
+				margin-bottom: 0.25rem;
+				font-size: 1.5rem;
+			}
+			
+			* {
+				transition: color 0.2s;
+			}
+
+		}
+
+		li a:hover {
+			* {
+				color: var(--yellow-500);
+			}
+		}
+
+		li + li {
+			margin-top: 2rem;
+		}
+	}
+}
