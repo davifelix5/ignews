@@ -27,7 +27,7 @@ export default function Home({ price, interval, error }: HomeProps) {
 
           {error ? (
             <>
-              <p>There was an error with the subscription section</p>,
+              <p>There was an error with the subscription section</p>
               <p>Please try again later</p>
             </>
           ) : (

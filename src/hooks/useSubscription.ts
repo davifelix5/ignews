@@ -15,15 +15,9 @@ export function useSubscribe() {
       return
     }
 
-    const { email } = data.user
+    const { subscription } = data
 
-    const response = await api.get('subscribed', {
-      params: { email }
-    })
-
-    const { subscribed } = response.data
-
-    if (subscribed) {
+    if (subscription) {
       toast.warning('User already subscribed')
       return
     }

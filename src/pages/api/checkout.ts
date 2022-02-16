@@ -79,7 +79,7 @@ const subscribe: NextApiHandler = async (req, res) => {
 
     res.status(201).json({ checkoutSessionId: checkoutSession.id })
   
-  } catch (err) {
+  } catch {
     res
       .status(500)
       .end('There was an error while creating checkout session')

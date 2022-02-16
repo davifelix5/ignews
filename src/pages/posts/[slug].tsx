@@ -11,7 +11,6 @@ import ReactHTMLParser from 'html-react-parser'
 import styles from '../../styles/Post.module.scss'
 
 import { Subscribe } from "../../components/Subscribe"
-import { checkSubscription } from "../api/_lib/manageSubscriotions"
 
 interface PostProps {
   post: {
@@ -54,10 +53,15 @@ export const getServerSideProps: GetServerSideProps = async (req) => {
   const session = await getSession(req)
   
   if (!session) {
-    throw new Error('User is not logged in')
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
   }
-
-  const isUserSubscribed = await checkSubscription(session.user.email)
+  
+  const isUserSubscribed = session.subscription
 
   const prismicClient = createPrismicClient(req)
   const response = await prismicClient.getByUID('post', slug as string, {
