@@ -4,6 +4,7 @@ import { signIn, signOut, useSession } from 'next-auth/react'
 
 import { FaGithub } from 'react-icons/fa'
 import { FiX } from 'react-icons/fi'
+import { MdStar } from 'react-icons/md'
 
 export function SignInButton() {
   const { status, data } = useSession()
@@ -21,7 +22,14 @@ export function SignInButton() {
   return isUserLoggedIn ? (
     <div className={`${styles.button} ${styles.loggedIn}`}>
       <FaGithub size={25} color="#04D361" />
-      <span>{ data.user.name }</span>
+      <span>
+        { data.user.name }
+        {data?.subscription && (
+          <small className="subscribed-start">
+            <MdStar size={15} color="#eba417" />
+          </small>
+        )}
+      </span>
       <button onClick={handleUserSignOff}>
         <FiX size={20} color="#a8a8b3" />
       </button>

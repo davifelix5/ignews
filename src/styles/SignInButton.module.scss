@@ -8,10 +8,10 @@
 
   border: none;
   border-radius: 5rem;
-  
+
   color: var(--white);
   font-weight: 700;
-  
+
   &.loggedOff {
     transition: filter 0.3s;
     &:hover {
@@ -27,7 +27,13 @@
   }
 
   span {
+    position: relative;
     white-space: nowrap;
+    svg {
+      position: absolute;
+      top: -10px;
+      left: -18px;
+    }
   }
 
   button {
