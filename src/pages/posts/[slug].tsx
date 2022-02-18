@@ -52,16 +52,7 @@ export const getServerSideProps: GetServerSideProps = async (req) => {
   
   const session = await getSession(req)
   
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false
-      }
-    }
-  }
-  
-  const isUserSubscribed = session.subscription
+  const isUserSubscribed = session?.subscription
 
   const prismicClient = createPrismicClient(req)
   const response = await prismicClient.getByUID('post', slug as string, {
@@ -80,7 +71,7 @@ export const getServerSideProps: GetServerSideProps = async (req) => {
 
   return {
     props: {
-      subscribed: isUserSubscribed,
+      subscribed: Boolean(isUserSubscribed),
       post,
     },
   }
